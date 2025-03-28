@@ -1,0 +1,147 @@
+import { MessageData } from '../types';
+
+export const dummyData: MessageData[] = [
+  {
+    id: "MSG001",
+    mtMessageType: "MT103",
+    mxMessageType: "pacs.008",
+    direction: "Inward",
+    amount: "50000.00",
+    currency: "USD",
+    date: "2025-03-15",
+    status: "Successful",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I103TESTBIC0XXXXN}{4:\n:20:REFERENCE123\n:23B:CRED\n:32A:230315USD50000,00\n:50K:/12345678\nSENDER NAME\nSENDER ADDRESS\n:59:/87654321\nRECEIVER NAME\nRECEIVER ADDRESS\n:71A:SHA\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08\">\n    <FIToFICstmrCdtTrf>\n        <GrpHdr>\n            <MsgId>REFERENCE123</MsgId>\n            <CreDtTm>2023-03-15T10:30:00</CreDtTm>\n            <NbOfTxs>1</NbOfTxs>\n            <SttlmInf>\n                <SttlmMtd>INDA</SttlmMtd>\n            </SttlmInf>\n        </GrpHdr>\n        <CdtTrfTxInf>\n            <PmtId>\n                <InstrId>REFERENCE123</InstrId>\n                <EndToEndId>REFERENCE123</EndToEndId>\n            </PmtId>\n            <IntrBkSttlmAmt Ccy=\"USD\">50000.00</IntrBkSttlmAmt>\n            <IntrBkSttlmDt>2023-03-15</IntrBkSttlmDt>\n            <ChrgBr>SHAR</ChrgBr>\n            <Dbtr>\n                <Nm>SENDER NAME</Nm>\n                <PstlAdr>\n                    <AdrLine>SENDER ADDRESS</AdrLine>\n                </PstlAdr>\n            </Dbtr>\n            <DbtrAcct>\n                <Id>\n                    <Othr>\n                        <Id>12345678</Id>\n                    </Othr>\n                </Id>\n            </DbtrAcct>\n            <Cdtr>\n                <Nm>RECEIVER NAME</Nm>\n                <PstlAdr>\n                    <AdrLine>RECEIVER ADDRESS</AdrLine>\n                </PstlAdr>\n            </Cdtr>\n            <CdtrAcct>\n                <Id>\n                    <Othr>\n                        <Id>87654321</Id>\n                    </Othr>\n                </Id>\n            </CdtrAcct>\n        </CdtTrfTxInf>\n    </FIToFICstmrCdtTrf>\n</Document>"
+  },
+  {
+    id: "MSG002",
+    mtMessageType: "MT202",
+    mxMessageType: "pacs.009",
+    direction: "Outward",
+    amount: "100000.00",
+    currency: "EUR",
+    date: "2025-03-16",
+    status: "Failed",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I202TESTBIC0XXXXN}{4:\n:20:REFERENCE456\n:21:RELATED789\n:32A:230316EUR100000,00\n:58A:/54321098\nBENEFICIARY BIC\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pacs.009.001.08\">\n    <FICdtTrf>\n        <GrpHdr>\n            <MsgId>REFERENCE456</MsgId>\n            <CreDtTm>2023-03-16T14:15:00</CreDtTm>\n            <NbOfTxs>1</NbOfTxs>\n            <SttlmInf>\n                <SttlmMtd>INDA</SttlmMtd>\n            </SttlmInf>\n        </GrpHdr>\n        <CdtTrfTxInf>\n            <PmtId>\n                <InstrId>REFERENCE456</InstrId>\n                <EndToEndId>RELATED789</EndToEndId>\n            </PmtId>\n            <IntrBkSttlmAmt Ccy=\"EUR\">100000.00</IntrBkSttlmAmt>\n            <IntrBkSttlmDt>2023-03-16</IntrBkSttlmDt>\n            <CdtrAgt>\n                <FinInstnId>\n                    <BICFI>BENEFICIARY BIC</BICFI>\n                </FinInstnId>\n            </CdtrAgt>\n            <CdtrAgtAcct>\n                <Id>\n                    <Othr>\n                        <Id>54321098</Id>\n                    </Othr>\n                </Id>\n            </CdtrAgtAcct>\n        </CdtTrfTxInf>\n    </FICdtTrf>\n</Document>"
+  },
+  {
+    id: "MSG003",
+    mtMessageType: "MT700",
+    mxMessageType: "catm.007",
+    direction: "Inward",
+    amount: "75000.00",
+    currency: "GBP",
+    date: "2025-03-14",
+    status: "Successful",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I700TESTBIC0XXXXN}{4:\n:27:1/1\n:40A:IRREVOCABLE\n:20:LC789012\n:31C:250314\n:31D:250614LONDON\n:50:/23456789\nAPPLICANT NAME\nAPPLICANT ADDRESS\n:59:/34567890\nBENEFICIARY NAME\nBENEFICIARY ADDRESS\n:32B:GBP75000,00\n:39A:30/30\n:41D:ANY BANK\nLONDON\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:catm.007.001.04\">\n    <LttrOfCdtIsse>\n        <LttrOfCdtIsseDtls>\n            <LttrOfCdtRef>LC789012</LttrOfCdtRef>\n            <IsseDt>2025-03-14</IsseDt>\n            <IsseTp>IRVC</IsseTp>\n            <ExpryDt>2025-06-14</ExpryDt>\n            <ExpryPlc>LONDON</ExpryPlc>\n            <Amt Ccy=\"GBP\">75000.00</Amt>\n            <TrlrPrd>\n                <ShpmntPrd>30</ShpmntPrd>\n                <PrsnttnPrd>30</PrsnttnPrd>\n            </TrlrPrd>\n            <Appcnt>\n                <Nm>APPLICANT NAME</Nm>\n                <PstlAdr>\n                    <AdrLine>APPLICANT ADDRESS</AdrLine>\n                </PstlAdr>\n                <AcctId>23456789</AcctId>\n            </Appcnt>\n            <Bnfcry>\n                <Nm>BENEFICIARY NAME</Nm>\n                <PstlAdr>\n                    <AdrLine>BENEFICIARY ADDRESS</AdrLine>\n                </PstlAdr>\n                <AcctId>34567890</AcctId>\n            </Bnfcry>\n            <DsgntdFI>\n                <Nm>ANY BANK</Nm>\n                <PstlAdr>\n                    <AdrLine>LONDON</AdrLine>\n                </PstlAdr>\n            </DsgntdFI>\n        </LttrOfCdtIsseDtls>\n    </LttrOfCdtIsse>\n</Document>"
+  },
+  {
+    id: "MSG004",
+    mtMessageType: "MT760",
+    mxMessageType: "camt.998",
+    direction: "Outward",
+    amount: "300000.00",
+    currency: "USD",
+    date: "2025-03-12",
+    status: "Pending",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I760TESTBIC0XXXXN}{4:\n:27:1/1\n:20:GUARANTEE123\n:30:250312\n:22K:DGAR\n:32B:USD300000,00\n:50:/45678901\nORDERING CUSTOMER\nORDERING ADDRESS\n:59:/56789012\nBENEFICIARY\nBENEFICIARY ADDRESS\n:77C:THIS IS A DEMAND GUARANTEE\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.998.001.03\">\n    <PrtryMsg>\n        <MsgId>GUARANTEE123</MsgId>\n        <MsgDef>\n            <Prtry>guarantee</Prtry>\n        </MsgDef>\n        <Data>\n            <Tp>DGAR</Tp>\n            <DtOfIsse>2025-03-12</DtOfIsse>\n            <Amt Ccy=\"USD\">300000.00</Amt>\n            <Orderer>\n                <Nm>ORDERING CUSTOMER</Nm>\n                <PstlAdr>\n                    <AdrLine>ORDERING ADDRESS</AdrLine>\n                </PstlAdr>\n                <AcctId>45678901</AcctId>\n            </Orderer>\n            <Bnfcry>\n                <Nm>BENEFICIARY</Nm>\n                <PstlAdr>\n                    <AdrLine>BENEFICIARY ADDRESS</AdrLine>\n                </PstlAdr>\n                <AcctId>56789012</AcctId>\n            </Bnfcry>\n            <AddtlInf>THIS IS A DEMAND GUARANTEE</AddtlInf>\n        </Data>\n    </PrtryMsg>\n</Document>"
+  },
+  {
+    id: "MSG005",
+    mtMessageType: "MT103",
+    mxMessageType: "pacs.008",
+    direction: "Inward",
+    amount: "25750.00",
+    currency: "USD",
+    date: "2025-03-16",
+    status: "Successful",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I103TESTBIC0XXXXN}{4:\n:20:REFERENCE234\n:23B:CRED\n:32A:250316USD25750,00\n:50K:/22334455\nALICE SMITH\n10 MAIN ST, NEW YORK\n:59:/55667788\nBOB JOHNSON\n123 MAPLE AVE, BOSTON\n:71A:SHA\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08\">\n<FIToFICstmrCdtTrf>\n<GrpHdr>\n<MsgId>REFERENCE234</MsgId>\n<CreDtTm>2025-03-16T09:15:00</CreDtTm>\n<NbOfTxs>1</NbOfTxs>\n<SttlmInf>\n<SttlmMtd>INDA</SttlmMtd>\n</SttlmInf>\n</GrpHdr>\n<CdtTrfTxInf>\n<PmtId>\n<InstrId>REFERENCE234</InstrId>\n<EndToEndId>REFERENCE234</EndToEndId>\n</PmtId>\n<IntrBkSttlmAmt Ccy=\"USD\">25750.00</IntrBkSttlmAmt>\n<IntrBkSttlmDt>2025-03-16</IntrBkSttlmDt>\n<ChrgBr>SHAR</ChrgBr>\n<Dbtr>\n<Nm>ALICE SMITH</Nm>\n<PstlAdr>\n<AdrLine>10 MAIN ST, NEW YORK</AdrLine>\n</PstlAdr>\n</Dbtr>\n<DbtrAcct>\n<Id>\n<Othr>\n<Id>22334455</Id>\n</Othr>\n</Id>\n</DbtrAcct>\n<Cdtr>\n<Nm>BOB JOHNSON</Nm>\n<PstlAdr>\n<AdrLine>123 MAPLE AVE, BOSTON</AdrLine>\n</PstlAdr>\n</Cdtr>\n<CdtrAcct>\n<Id>\n<Othr>\n<Id>55667788</Id>\n</Othr>\n</Id>\n</CdtrAcct>\n</CdtTrfTxInf>\n</FIToFICstmrCdtTrf>\n</Document>"
+  },
+  {
+    id: "MSG006",
+    mtMessageType: "MT202",
+    mxMessageType: "pacs.009",
+    direction: "Outward",
+    amount: "175000.00",
+    currency: "EUR",
+    date: "2025-03-13",
+    status: "Successful",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I202TESTBIC0XXXXN}{4:\n:20:REFERENCE789\n:21:RELATED101\n:32A:250313EUR175000,00\n:58A:/66778899\nCITI FRANKFURT\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pacs.009.001.08\">\n<FICdtTrf>\n<GrpHdr>\n<MsgId>REFERENCE789</MsgId>\n<CreDtTm>2025-03-13T11:20:00</CreDtTm>\n<NbOfTxs>1</NbOfTxs>\n<SttlmInf>\n<SttlmMtd>INDA</SttlmMtd>\n</SttlmInf>\n</GrpHdr>\n<CdtTrfTxInf>\n<PmtId>\n<InstrId>REFERENCE789</InstrId>\n<EndToEndId>RELATED101</EndToEndId>\n</PmtId>\n<IntrBkSttlmAmt Ccy=\"EUR\">175000.00</IntrBkSttlmAmt>\n<IntrBkSttlmDt>2025-03-13</IntrBkSttlmDt>\n<CdtrAgt>\n<FinInstnId>\n<BICFI>CITI FRANKFURT</BICFI>\n</FinInstnId>\n</CdtrAgt>\n<CdtrAgtAcct>\n<Id>\n<Othr>\n<Id>66778899</Id>\n</Othr>\n</Id>\n</CdtrAgtAcct>\n</CdtTrfTxInf>\n</FICdtTrf>\n</Document>"
+  },
+  {
+    id: "MSG007",
+    mtMessageType: "MT110",
+    mxMessageType: "camt.055",
+    direction: "Inward",
+    amount: "45325.00",
+    currency: "JPY",
+    date: "2025-03-10",
+    status: "Failed",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I110TESTBIC0XXXXN}{4:\n:20:ADVISE345\n:21:ORIGINAL567\n:32B:JPY45325,00\n:50K:/11223344\nTOKYO CORP\n:59:/99887766\nOSAKA LTD\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.055.001.08\">\n<CstmrPmtCxlReq>\n<Assgnmt>\n<Id>ADVISE345</Id>\n<Assgnr>\n<Pty>\n<Nm>TOKYO CORP</Nm>\n<Id>\n<OrgId>\n<Othr>\n<Id>11223344</Id>\n</Othr>\n</OrgId>\n</Id>\n</Pty>\n</Assgnr>\n<Assgne>\n<Pty>\n<Nm>OSAKA LTD</Nm>\n<Id>\n<OrgId>\n<Othr>\n<Id>99887766</Id>\n</Othr>\n</OrgId>\n</Id>\n</Pty>\n</Assgne>\n<CreDtTm>2025-03-10T14:00:00</CreDtTm>\n</Assgnmt>\n<Undrlyg>\n<OrgnlGrpInfAndCxl>\n<OrgnlMsgId>ORIGINAL567</OrgnlMsgId>\n<OrgnlMsgNmId>pacs.008.001.08</OrgnlMsgNmId>\n<OrgnlCreDtTm>2025-03-10T10:30:00</OrgnlCreDtTm>\n</OrgnlGrpInfAndCxl>\n<OrgnlPmtInfAndCxl>\n<OrgnlPmtInfId>ORIGINAL567</OrgnlPmtInfId>\n<TxInf>\n<OrgnlInstrId>ORIGINAL567</OrgnlInstrId>\n<OrgnlEndToEndId>ORIGINAL567</OrgnlEndToEndId>\n<OrgnlTxId>ORIGINAL567</OrgnlTxId>\n<OrgnlIntrBkSttlmAmt Ccy=\"JPY\">45325.00</OrgnlIntrBkSttlmAmt>\n</TxInf>\n</OrgnlPmtInfAndCxl>\n</Undrlyg>\n</CstmrPmtCxlReq>\n</Document>"
+  },
+  {
+    id: "MSG008",
+    mtMessageType: "MT101",
+    mxMessageType: "pain.001",
+    direction: "Outward",
+    amount: "9750.00",
+    currency: "CHF",
+    date: "2025-03-16",
+    status: "Pending",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I101TESTBIC0XXXXN}{4:\n:20:REQUEST890\n:30:250316\n:50L:/44332211\nSWISS CLIENT AG\nZURICH\n:59:/55443322\nALPINE SERVICES SA\nGENEVA\n:32B:CHF9750,00\n:70:CONSULTING SERVICES\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.001.001.09\">\n<CstmrCdtTrfInitn>\n<GrpHdr>\n<MsgId>REQUEST890</MsgId>\n<CreDtTm>2025-03-16T08:30:00</CreDtTm>\n<NbOfTxs>1</NbOfTxs>\n<CtrlSum>9750.00</CtrlSum>\n<InitgPty>\n<Nm>SWISS CLIENT AG</Nm>\n<PstlAdr>\n<AdrLine>ZURICH</AdrLine>\n</PstlAdr>\n</InitgPty>\n</GrpHdr>\n<PmtInf>\n<PmtInfId>REQUEST890</PmtInfId>\n<PmtMtd>TRF</PmtMtd>\n<ReqdExctnDt>\n<Dt>2025-03-16</Dt>\n</ReqdExctnDt>\n<Dbtr>\n<Nm>SWISS CLIENT AG</Nm>\n<PstlAdr>\n<AdrLine>ZURICH</AdrLine>\n</PstlAdr>\n</Dbtr>\n<DbtrAcct>\n<Id>\n<Othr>\n<Id>44332211</Id>\n</Othr>\n</Id>\n</DbtrAcct>\n<CdtTrfTxInf>\n<PmtId>\n<InstrId>REQUEST890</InstrId>\n<EndToEndId>REQUEST890</EndToEndId>\n</PmtId>\n<Amt>\n<InstdAmt Ccy=\"CHF\">9750.00</InstdAmt>\n</Amt>\n<Cdtr>\n<Nm>ALPINE SERVICES SA</Nm>\n<PstlAdr>\n<AdrLine>GENEVA</AdrLine>\n</PstlAdr>\n</Cdtr>\n<CdtrAcct>\n<Id>\n<Othr>\n<Id>55443322</Id>\n</Othr>\n</Id>\n</CdtrAcct>\n<RmtInf>\n<Ustrd>CONSULTING SERVICES</Ustrd>\n</RmtInf>\n</CdtTrfTxInf>\n</PmtInf>\n</CstmrCdtTrfInitn>\n</Document>"
+  },
+  {
+    id: "MSG009",
+    mtMessageType: "MT940",
+    mxMessageType: "camt.053",
+    direction: "Inward",
+    amount: "120500.00",
+    currency: "GBP",
+    date: "2025-03-11",
+    status: "Successful",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I940TESTBIC0XXXXN}{4:\n:20:STATEMENT111\n:25:12345678\n:28C:123/1\n:60F:C250311GBP120500,00\n:62F:C250311GBP120500,00\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.053.001.08\">\n<BkToCstmrStmt>\n<GrpHdr>\n<MsgId>STATEMENT111</MsgId>\n<CreDtTm>2025-03-11T18:00:00</CreDtTm>\n</GrpHdr>\n<Stmt>\n<Id>123/1</Id>\n<ElctrncSeqNb>1</ElctrncSeqNb>\n<Acct>\n<Id>\n<Othr>\n<Id>12345678</Id>\n</Othr>\n</Id>\n</Acct>\n<Bal>\n<Tp>\n<CdOrPrtry>\n<Cd>OPBD</Cd>\n</CdOrPrtry>\n</Tp>\n<Amt Ccy=\"GBP\">120500.00</Amt>\n<CdtDbtInd>CRDT</CdtDbtInd>\n<Dt>\n<Dt>2025-03-11</Dt>\n</Dt>\n</Bal>\n<Bal>\n<Tp>\n<CdOrPrtry>\n<Cd>CLBD</Cd>\n</CdOrPrtry>\n</Tp>\n<Amt Ccy=\"GBP\">120500.00</Amt>\n<CdtDbtInd>CRDT</CdtDbtInd>\n<Dt>\n<Dt>2025-03-11</Dt>\n</Dt>\n</Bal>\n</Stmt>\n</BkToCstmrStmt>\n</Document>"
+  },
+  {
+    id: "MSG010",
+    mtMessageType: "MT103",
+    mxMessageType: "pacs.008",
+    direction: "Outward",
+    amount: "67800.00",
+    currency: "USD",
+    date: "2025-03-12",
+    status: "Successful",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I103TESTBIC0XXXXN}{4:\n:20:PAYMENT222\n:23B:CRED\n:32A:250312USD67800,00\n:50K:/33221100\nCALIFORNIA INC\nSAN FRANCISCO\n:59:/00112233\nTEXAS CORP\nHOUSTON\n:71A:SHA\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08\">\n<FIToFICstmrCdtTrf>\n<GrpHdr>\n<MsgId>PAYMENT222</MsgId>\n<CreDtTm>2025-03-12T10:15:00</CreDtTm>\n<NbOfTxs>1</NbOfTxs>\n<SttlmInf>\n<SttlmMtd>INDA</SttlmMtd>\n</SttlmInf>\n</GrpHdr>\n<CdtTrfTxInf>\n<PmtId>\n<InstrId>PAYMENT222</InstrId>\n<EndToEndId>PAYMENT222</EndToEndId>\n</PmtId>\n<IntrBkSttlmAmt Ccy=\"USD\">67800.00</IntrBkSttlmAmt>\n<IntrBkSttlmDt>2025-03-12</IntrBkSttlmDt>\n<ChrgBr>SHAR</ChrgBr>\n<Dbtr>\n<Nm>CALIFORNIA INC</Nm>\n<PstlAdr>\n<AdrLine>SAN FRANCISCO</AdrLine>\n</PstlAdr>\n</Dbtr>\n<DbtrAcct>\n<Id>\n<Othr>\n<Id>33221100</Id>\n</Othr>\n</Id>\n</DbtrAcct>\n<Cdtr>\n<Nm>TEXAS CORP</Nm>\n<PstlAdr>\n<AdrLine>HOUSTON</AdrLine>\n</PstlAdr>\n</Cdtr>\n<CdtrAcct>\n<Id>\n<Othr>\n<Id>00112233</Id>\n</Othr>\n</Id>\n</CdtrAcct>\n</CdtTrfTxInf>\n</FIToFICstmrCdtTrf>\n</Document>"
+  },
+  {
+    id: "MSG011",
+    mtMessageType: "MT202",
+    mxMessageType: "pacs.009",
+    direction: "Outward",
+    amount: "500000.00",
+    currency: "USD",
+    date: "2025-03-17",
+    status: "Pending",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I202TESTBIC0XXXXN}{4:\n:20:TRANSFER333\n:21:RELATED444\n:32A:250317USD500000,00\n:58A:/98765432\nJPMORGAN NY\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pacs.009.001.08\">\n<FICdtTrf>\n<GrpHdr>\n<MsgId>TRANSFER333</MsgId>\n<CreDtTm>2025-03-17T09:00:00</CreDtTm>\n<NbOfTxs>1</NbOfTxs>\n<SttlmInf>\n<SttlmMtd>INDA</SttlmMtd>\n</SttlmInf>\n</GrpHdr>\n<CdtTrfTxInf>\n<PmtId>\n<InstrId>TRANSFER333</InstrId>\n<EndToEndId>RELATED444</EndToEndId>\n</PmtId>\n<IntrBkSttlmAmt Ccy=\"USD\">500000.00</IntrBkSttlmAmt>\n<IntrBkSttlmDt>2025-03-17</IntrBkSttlmDt>\n<CdtrAgt>\n<FinInstnId>\n<BICFI>JPMORGAN NY</BICFI>\n</FinInstnId>\n</CdtrAgt>\n<CdtrAgtAcct>\n<Id>\n<Othr>\n<Id>98765432</Id>\n</Othr>\n</Id>\n</CdtrAgtAcct>\n</CdtTrfTxInf>\n</FICdtTrf>\n</Document>"
+  },
+  {
+    id: "MSG012",
+    mtMessageType: "MT103",
+    mxMessageType: "pacs.008",
+    direction: "Inward",
+    amount: "150000.00",
+    currency: "USD",
+    date: "2025-03-19",
+    status: "Successful",
+    originalMessage: "{1:F01TESTBICFXXX0000000000}{2:I103TESTBIC0XXXXN}{4:\n:20:REFERENCE123\n:23B:CRED\n:32A:230315USD50000,00\n:50K:/12345678\nSENDER NAME\nSENDER ADDRESS\n:59:/87654321\nRECEIVER NAME\nRECEIVER ADDRESS\n:71A:SHA\n-}",
+    translatedMessage: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08\">\n    <FIToFICstmrCdtTrf>\n        <GrpHdr>\n            <MsgId>REFERENCE123</MsgId>\n            <CreDtTm>2023-03-15T10:30:00</CreDtTm>\n            <NbOfTxs>1</NbOfTxs>\n            <SttlmInf>\n                <SttlmMtd>INDA</SttlmMtd>\n            </SttlmInf>\n        </GrpHdr>\n        <CdtTrfTxInf>\n            <PmtId>\n                <InstrId>REFERENCE123</InstrId>\n                <EndToEndId>REFERENCE123</EndToEndId>\n            </PmtId>\n            <IntrBkSttlmAmt Ccy=\"USD\">50000.00</IntrBkSttlmAmt>\n            <IntrBkSttlmDt>2023-03-15</IntrBkSttlmDt>\n            <ChrgBr>SHAR</ChrgBr>\n            <Dbtr>\n                <Nm>SENDER NAME</Nm>\n                <PstlAdr>\n                    <AdrLine>SENDER ADDRESS</AdrLine>\n                </PstlAdr>\n            </Dbtr>\n            <DbtrAcct>\n                <Id>\n                    <Othr>\n                        <Id>12345678</Id>\n                    </Othr>\n                </Id>\n            </DbtrAcct>\n            <Cdtr>\n                <Nm>RECEIVER NAME</Nm>\n                <PstlAdr>\n                    <AdrLine>RECEIVER ADDRESS</AdrLine>\n                </PstlAdr>\n            </Cdtr>\n            <CdtrAcct>\n                <Id>\n                    <Othr>\n                        <Id>87654321</Id>\n                    </Othr>\n                </Id>\n            </CdtrAcct>\n        </CdtTrfTxInf>\n    </FIToFICstmrCdtTrf>\n</Document>"
+  }]
