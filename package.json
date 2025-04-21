@@ -1,0 +1,43 @@
+{
+  "name": "swift-dashboard",
+  "version": "1.0.0",
+  "description": "SWIFT Dashboard for OpenSearch",
+  "main": "index.js",
+  "scripts": {
+    "build": "yarn plugin-helpers build",
+    "test": "yarn plugin-helpers test",
+    "lint": "yarn plugin-helpers lint"
+  },
+  "keywords": [
+    "opensearch",
+    "dashboard",
+    "plugin"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@opensearch-project/opensearch": "^3.4.0",
+    "chart.js": "^4.4.8",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "react-chartjs-2": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.1.7",
+    "@opensearch-dashboards/plugin-helpers": "^1.0.0",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.13",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "opensearchDashboards": {
+    "version": "2.x.x",
+    "templateVersion": "1.0.0"
+  }
+}

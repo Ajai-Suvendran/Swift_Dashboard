@@ -1,0 +1,9 @@
+{
+  "id": "swiftDashboard",
+  "version": "1.0.0",
+  "opensearchDashboardsVersion": "2.x.x",
+  "server": true,
+  "ui": true,
+  "requiredPlugins": ["navigation", "data", "savedObjects"],
+  "optionalPlugins": []
+}
