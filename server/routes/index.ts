@@ -1,88 +1,350 @@
-import { IRouter } from '../../../../src/core/server';
+import { IRouter, RequestHandlerContext } from '.../../../src/core/server';
+import { PluginContext } from '../types';
 import { schema } from '@osd/config-schema';
-import OpenSearchService from '../src/services/opensearchService';
+import { DashboardController } from '../controllers/dashboardController';
 
-export function defineRoutes(router: IRouter) {
-  // Get all messages
+export function registerRoutes(router: IRouter, context: PluginContext) {
+  const { logger } = context;
+  const dashboardController = new DashboardController(context);
+
+  // Base path for all API routes
+  const API_BASE = '/api/swift_dashboard';
+
+  // Dashboard data - messages list
   router.get(
     {
-      path: '/api/swift-dashboard/messages',
+      path: `${API_BASE}/messages-list`,
       validate: {
         query: schema.object({
-          fromDate: schema.maybe(schema.string()),
-          toDate: schema.maybe(schema.string()),
-          direction: schema.maybe(schema.string()),
-        }),
-      },
+          page: schema.maybe(schema.number()),
+          size: schema.maybe(schema.number()),
+          sort: schema.maybe(schema.string())
+        })
+      }
     },
-    async (context, request, response) => {
+    async (context: RequestHandlerContext, request, response) => {
       try {
-        const { fromDate, toDate, direction } = request.query;
-        const openSearchService = new OpenSearchService();
-        
-        let messages;
-        if (fromDate || toDate) {
-          messages = await openSearchService.getMessagesInDateRange(fromDate, toDate, direction);
-        } else {
-          messages = await openSearchService.getAllMessages(direction);
-        }
-        
-        return response.ok({
-          body: {
-            messages,
-            count: messages.length,
-          },
-        });
+        const result = await dashboardController.fetchDashboardData(context, request);
+        return response.ok({ body: result });
       } catch (error) {
-        console.error('Error fetching messages:', error);
+        logger.error(`Error fetching messages list: ${error}`);
         return response.customError({
           statusCode: 500,
           body: {
-            message: `Failed to fetch messages: ${error.message}`,
-          },
+            message: 'Failed to fetch messages list'
+          }
         });
       }
     }
   );
 
-  // Get message by ID
+  // Message specific endpoint
   router.get(
     {
-      path: '/api/swift-dashboard/message/{id}',
+      path: `${API_BASE}/message/{id}`,
       validate: {
         params: schema.object({
-          id: schema.string(),
-        }),
-      },
+          id: schema.string()
+        })
+      }
     },
-    async (context, request, response) => {
+    async (context: RequestHandlerContext, request, response) => {
       try {
-        const { id } = request.params;
-        const openSearchService = new OpenSearchService();
-        const message = await openSearchService.getMessageById(id);
-        
-        if (!message) {
-          return response.notFound({
-            body: {
-              message: `Message with id ${id} not found`,
-            },
-          });
-        }
-        
-        return response.ok({
-          body: message,
-        });
+        const result = await dashboardController.fetchMessageById(context, request);
+        return response.ok({ body: result });
       } catch (error) {
-        console.error(`Error fetching message with ID ${request.params.id}:`, error);
+        logger.error(`Error fetching message ${request.params.id}: ${error}`);
         return response.customError({
           statusCode: 500,
           body: {
-            message: `Failed to fetch message: ${error.message}`,
-          },
+            message: `Failed to fetch message ${request.params.id}`
+          }
         });
       }
     }
   );
 
-  // Define additional routes for your API...
+  // Chart data endpoint
+  router.get(
+    {
+      path: `${API_BASE}/chart`,
+      validate: {
+        query: schema.object({
+          range: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchChartData(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching chart data: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch chart data'
+          }
+        });
+      }
+    }
+  );
+
+  // Time-specific message endpoints
+  router.get(
+    {
+      path: `${API_BASE}/messages/daily`,
+      validate: {
+        query: schema.object({
+          date: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchDailyMessages(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching daily messages: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch daily messages'
+          }
+        });
+      }
+    }
+  );
+
+  router.get(
+    {
+      path: `${API_BASE}/messages/weekly`,
+      validate: {
+        query: schema.object({
+          week: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchWeeklyMessages(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching weekly messages: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch weekly messages'
+          }
+        });
+      }
+    }
+  );
+
+  router.get(
+    {
+      path: `${API_BASE}/messages/monthly`,
+      validate: {
+        query: schema.object({
+          month: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchMonthlyMessages(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching monthly messages: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch monthly messages'
+          }
+        });
+      }
+    }
+  );
+
+  // Time-specific chart data endpoints
+  router.get(
+    {
+      path: `${API_BASE}/chart/daily`,
+      validate: {
+        query: schema.object({
+          date: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchDailyChartData(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching daily chart data: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch daily chart data'
+          }
+        });
+      }
+    }
+  );
+
+  router.get(
+    {
+      path: `${API_BASE}/chart/weekly`,
+      validate: {
+        query: schema.object({
+          week: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchWeeklyChartData(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching weekly chart data: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch weekly chart data'
+          }
+        });
+      }
+    }
+  );
+
+  router.get(
+    {
+      path: `${API_BASE}/chart/monthly`,
+      validate: {
+        query: schema.object({
+          month: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchMonthlyChartData(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching monthly chart data: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch monthly chart data'
+          }
+        });
+      }
+    }
+  );
+
+  // Stats for top message types
+  router.get(
+    {
+      path: `${API_BASE}/stats/top-message-types`,
+      validate: {
+        query: schema.object({
+          limit: schema.maybe(schema.number()),
+          timeframe: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchTopMessageTypes(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching top message types: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch top message types'
+          }
+        });
+      }
+    }
+  );
+
+  // Recent messages
+  router.get(
+    {
+      path: `${API_BASE}/messages/recent`,
+      validate: {
+        query: schema.object({
+          limit: schema.maybe(schema.number()),
+          offset: schema.maybe(schema.number())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.getRecentMessages(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching recent messages: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch recent messages'
+          }
+        });
+      }
+    }
+  );
+
+  // Error statistics
+  router.get(
+    {
+      path: `${API_BASE}/error-statistics`,
+      validate: {
+        query: schema.object({
+          timeframe: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchErrorStatistics(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching error statistics: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch error statistics'
+          }
+        });
+      }
+    }
+  );
+
+  // Cache management
+  router.post(
+    {
+      path: `${API_BASE}/cache/refresh`,
+      validate: {
+        body: schema.nullable(schema.object({
+          target: schema.maybe(schema.string())
+        }))
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.refreshCache(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error refreshing cache: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to refresh cache'
+          }
+        });
+      }
+    }
+  );
 }
